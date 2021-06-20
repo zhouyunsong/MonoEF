@@ -1,6 +1,8 @@
 # Monocular 3D Object Detection: An Extrinsic Parameter Free Approach (CVPR2021)
 Yunsong Zhou, Yuan He, Hongzi Zhu, Cheng Wang, Hongyang Li, Qinhong Jiang
 
+Our paper is now avaiable on [CVPR 2021 open access](https://openaccess.thecvf.com/content/CVPR2021/html/Zhou_Monocular_3D_Object_Detection_An_Extrinsic_Parameter_Free_Approach_CVPR_2021_paper.html).
+
 ## Introduction
 
 Our framework is implemented and tested with Ubuntu 16.04, CUDA 8.0/9.0, Python 3, Pytorch 0.4/1.0/1.1, NVIDIA Tesla V100/TITANX GPU.
