@@ -1,38 +1,107 @@
-# Monocular 3D Object Detection: An Extrinsic Parameter Free Approach (CVPR2021)
-Yunsong Zhou, Yuan He, Hongzi Zhu, Cheng Wang, Hongyang Li, Qinhong Jiang
+# SMOKE: Single-Stage Monocular 3D Object Detection via Keypoint Estimation
 
-Our paper is now avaiable on [CVPR 2021 open access](https://openaccess.thecvf.com/content/CVPR2021/html/Zhou_Monocular_3D_Object_Detection_An_Extrinsic_Parameter_Free_Approach_CVPR_2021_paper.html).
+<img align="center" src="figures/animation.gif" width="750">
+
+[Video](https://www.youtube.com/watch?v=pvM_bASOQmo)
+
+This repository is the official implementation of our paper [SMOKE: Single-Stage Monocular 3D Object Detection via Keypoint Estimation](https://arxiv.org/pdf/2002.10111.pdf).
+For more details, please see our paper.
 
 ## Introduction
+SMOKE is a **real-time** monocular 3D object detector for autonomous driving. 
+The runtime on a single NVIDIA TITAN XP GPU is **~30ms**. 
+Part of the code comes from [CenterNet](https://github.com/xingyizhou/CenterNet), 
+[maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark),
+and [Detectron2](https://github.com/facebookresearch/detectron2).
 
-Our framework is implemented and tested with Ubuntu 16.04, CUDA 8.0/9.0, Python 3, Pytorch 0.4/1.0/1.1, NVIDIA Tesla V100/TITANX GPU.
+The performance on KITTI 3D detection (3D/BEV) is as follows:
 
-If you find our work useful in your research please consider citing our paper:
+|             |     Easy      |    Moderate    |     Hard     |
+|-------------|:-------------:|:--------------:|:------------:|
+| Car         | 14.17 / 21.08 | 9.88 / 15.13   | 8.63 / 12.91 | 
+| Pedestrian  | 5.16  / 6.22  | 3.24 / 4.05    | 2.53 / 3.38  | 
+| Cyclist     | 1.11  / 1.62  | 0.60 / 0.98    | 0.47 / 0.74  |
 
-    @InProceedings{Zhou_2021_CVPR,
-    author    = {Zhou, Yunsong and He, Yuan and Zhu, Hongzi and Wang, Cheng and Li, Hongyang and Jiang, Qinhong},
-    title     = {Monocular 3D Object Detection: An Extrinsic Parameter Free Approach},
-    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month     = {June},
-    year      = {2021},
-    pages     = {7556-7566}
-    }
+The pretrained weights can be downloaded [here](https://drive.google.com/open?id=11VK8_HfR7t0wm-6dCNP5KS3Vh-Qm686-).
 
 ## Requirements
+All codes are tested under the following environment:
+*   Ubuntu 16.04
+*   Python 3.7
+*   Pytorch 1.3.1
+*   CUDA 10.0
 
-- **Cuda & Cudnn & Python & Pytorch**
+## Dataset
+We train and test our model on official [KITTI 3D Object Dataset](http://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=3d). 
+Please first download the dataset and organize it as following structure:
+```
+kitti
+│──training
+│    ├──calib 
+│    ├──label_2 
+│    ├──image_2
+│    └──ImageSets
+└──testing
+     ├──calib 
+     ├──image_2
+     └──ImageSets
+```  
 
-    This project is tested with CUDA 8.0/9.0, Python 3, Pytorch 0.4/1.0/1.1, NVIDIA Tesla V100/TITANX GPU. And almost all the packages we use are covered by Anaconda.
+## Setup
+1. We use `conda` to manage the environment:
+```
+conda create -n SMOKE python=3.7
+```
 
-    Please install proper CUDA and CUDNN version, and then install Anaconda3 and Pytorch.
+2. Clone this repo:
+```
+git clone https://github.com/lzccccc/SMOKE
+```
 
-## Data preparation
+3. Build codes:
+```
+python setup.py build develop
+```
 
-Download and unzip the full [KITTI](http://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=3d) detection dataset. 
+4. Link to dataset directory:
+```
+mkdir datasets
+ln -s /path_to_kitti_dataset datasets/kitti
+```
 
-## Training 
+## Getting started
+First check the config file under `configs/`. 
 
-I am currently busy with my own courses.
-I will sort out the work involved in the near future.
-Relevant code and models will be avaiable soon.
+We train the model on 4 GPUs with 32 batch size:
+```
+python tools/plain_train_net.py --num-gpus 4 --config-file "configs/smoke_gn_vector.yaml"
+```
 
+For single GPU training, simply run:
+```
+python tools/plain_train_net.py --config-file "configs/smoke_gn_vector.yaml"
+```
+
+We currently only support single GPU testing:
+```
+python tools/plain_train_net.py --eval-only --config-file "configs/smoke_gn_vector.yaml"
+```
+
+## Acknowledgement
+[CenterNet](https://github.com/xingyizhou/CenterNet)
+
+[maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark)
+
+[Detectron2](https://github.com/facebookresearch/detectron2)
+
+
+## Citations
+Please cite our paper if you find SMOKE is helpful for your research.
+```
+@article{liu2020SMOKE,
+  title={{SMOKE}: Single-Stage Monocular 3D Object Detection via Keypoint Estimation},
+  author={Zechen Liu and Zizhang Wu and Roland T\'oth},
+  journal={arXiv preprint arXiv:2002.10111},
+  year={2020}
+}
+```
