@@ -1,4 +1,4 @@
-# Monocular 3d object detection: An extrinsic parameter free approach
+# Monocular 3D Object Detection: An Extrinsic Parameter Free Approach
 
 This repository is the official implementation of our paper.
 For more details, please see our paper.
